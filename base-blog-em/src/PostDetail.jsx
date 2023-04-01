@@ -39,7 +39,12 @@ export function PostDetail({ post }) {
 
   //can take in  an argument
   const deleteMutation = useMutation((postId) => deletePost(postId) 
-  
+  )
+
+  // 1. declare a new mutation option, useMutation from reactquery, take in a parameter
+  // 2. Add onclick listener and lifecycle 
+
+  const updateMutation  = useMutation((postId) => updatePost(postId)
   )
 
   if(isLoading) return <h1>Loading</h1>
@@ -49,23 +54,25 @@ export function PostDetail({ post }) {
   return (
     <>
       <h3 style={{ color: "blue" }}>{post.title}</h3>
-      <button onClick={() => deleteMutation.mutate(post.id) }>Delete</button>
+      <button onClick={() => console.log('used to delete') }>Delete</button>
 
       {/* conditional render */}
       {/* //mutation is an object! */}
+
+      <button onClick={() => updateMutation.mutate(post.id)}>Update title</button>
+
+      {/* 3. A conditioal render uses JSX and then &&, ()
       {deleteMutation.isError && (
         <p style={{color: 'red' }}>Error deleting post</p>
+      )} */}
+
+      {updateMutation.isLoading && (
+        <p style={{color: 'yellow'}}>LOADING!!</p>
       )}
 
-      {deleteMutation.isLoading && (
-        <p style={{color: 'red' }}>Deleting the post post</p>
+      {updateMutation.isSuccess && (
+        <p style={{color: 'green'}}> YAAY!!</p>
       )}
-
-      {deleteMutation.isSuccess && (
-        <p style={{color: 'green' }}>POST IS  ALL GOOD!!!</p>
-      )}
-
-      <button>Update title</button>
 
       <p>{post.body}</p>
       <h4>Comments</h4>
